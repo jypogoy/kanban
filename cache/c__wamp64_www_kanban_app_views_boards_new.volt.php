@@ -2,7 +2,7 @@
 
 <h2>New Board</h2>
 
-<?= $this->tag->form(['boards/create', 'id' => 'dataForm', 'class' => 'ui form']) ?>
+<?= $this->tag->form(['boards/create', 'id' => 'dataForm', 'class' => 'ui form', 'autocomplete' => 'off']) ?>
 
     <?php foreach ($form as $element) { ?>
     
@@ -21,8 +21,8 @@
 
     <?= $this->tag->hiddenField(['saveNew', 'id' => 'saveNew']) ?>
 
-    <?= $this->tag->submitButton(['Save', 'class' => 'ui primary button', 'onclick' => 'return Form.validate(false);']) ?>
-    <?= $this->tag->submitButton(['Save & New', 'class' => 'ui teal button', 'onclick' => 'return Form.validate(false);']) ?>
+    <?= $this->tag->submitButton(['Save', 'class' => 'ui primary button', 'onclick' => 'return Form.validate(false, false);']) ?>
+    <?= $this->tag->submitButton(['Save & New', 'class' => 'ui teal button', 'onclick' => 'return Form.validate(false, true);']) ?>
     <a href="../boards" class="ui button">Cancel</a>
 
 </form>
@@ -31,5 +31,3 @@
 <?php if (isset($messages)) { ?>
     <?= $this->alert->getSystemMessage($messages) ?>
 <?php } ?>   
-
-    

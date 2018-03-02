@@ -2,7 +2,7 @@
 
 <h2>New Board</h2>
 
-{{ form('boards/create', 'id' : 'dataForm', 'class' : 'ui form') }}
+{{ form('boards/create', 'id' : 'dataForm', 'class' : 'ui form', 'autocomplete' : 'off') }}
 
     {% for element in form %}
     
@@ -21,8 +21,8 @@
 
     {{ hidden_field('saveNew', 'id' : 'saveNew') }}
 
-    {{ submit_button('Save', 'class': 'ui primary button', 'onclick': 'return Form.validate(false);') }}
-    {{ submit_button('Save & New', 'class' : 'ui teal button', 'onclick': 'return Form.validate(false);') }}
+    {{ submit_button('Save', 'class': 'ui primary button', 'onclick': 'return Form.validate(false, false);') }}
+    {{ submit_button('Save & New', 'class' : 'ui teal button', 'onclick': 'return Form.validate(false, true);') }}
     <a href="../boards" class="ui button">Cancel</a>
 
 </form>
@@ -31,19 +31,3 @@
 {% if messages is defined %}
     {{ alert.getSystemMessage(messages) }}
 {% endif %}   
-
-{#% if messages is defined %}
-    <div class="ui error message">
-        <h4 class="ui header">
-            <i class="search icon"></i>
-            System Validation
-        </h4>
-        <p>
-            <ul>
-                {% for message in messages %}
-                    <li>{{ message }}</li>
-                {% endfor %}
-            </ul>
-        </p>
-    </div>
-{% endif %#}    

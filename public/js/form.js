@@ -4,7 +4,7 @@ $(function () {
 });
 
 var Form = {
-    validate: function (isAjax) {        
+    validate: function (isAjax, isSaveNew) {        
         var isValid = true;
         $('form *').filter(':input').each(function () {
             var el = this;
@@ -25,7 +25,8 @@ var Form = {
         $('.error').find('input:text, input:password, textarea').first().focus();
         if (!isValid) return false;
 
-        $('#saveNew').val(saveNew);
+        $('#saveNew').val(isSaveNew);
+        
         if (!isAjax) $("form")[0].submit();          
         return isValid;
     },
