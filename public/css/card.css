@@ -1,0 +1,51 @@
+.ui.card.red {
+    background-color: #fc4d4d;
+}
+
+.ui.card.red .header {
+    color: #fff;
+}
+
+.ui.card.red .meta {
+    color: #ffffffe1;
+}
+
+.ui.card.orange * {
+    background-color: orange;
+}
+
+.ui.card.yellow {
+    background-color: #f7f767;
+}
+
+.ui.card.green {
+    background-color: lightgreen;
+}
+
+.ui.card.blue {
+    background-color: lightblue;
+}
+
+.ui.card.indigo {
+    background-color: #602988;
+}
+
+.ui.card.indigo .header {
+    color: #fff;
+}
+
+.ui.card.indigo .meta {
+    color: #ffffffe1;
+}
+
+.ui.card.violet {
+    background-color: violet;
+}
+
+.red-actions, .orange-actions, .indigo-actions, .violet-actions {
+    color: #fff;
+}
+
+.blue-actions, .green-actions, .yellow-actions {
+    color: #354659;
+}
