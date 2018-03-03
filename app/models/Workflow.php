@@ -41,6 +41,13 @@ class Workflow extends \Phalcon\Mvc\Model
      */
     public $board_id;
 
+      /**
+     *
+     * @var integer
+     * @Column(type="integer", length=2, nullable=true)
+     */
+    public $sequence;
+
     /**
      * Initialize method for model.
      */

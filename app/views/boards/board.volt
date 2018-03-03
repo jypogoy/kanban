@@ -1,4 +1,4 @@
-<h2>{{ board.name }} Board</h2>
+<h2 class="ui dividing header">{{ board.name }}</h2>
 
 {{ stylesheet_link('css/board.css') }}
 
@@ -217,22 +217,12 @@
             </li>
         </ul>
     </div>
+{% else %}
+    <div class="ui warning message" style="margin: 10px 0px 0px 10px;">
+      <div class="header">
+        No existing workflow found for this board.
+      </div>
+      Visit the board's <b><a href="../../boards/settings/{{ board.id }}" data-tooltip="Open Board Settings" data-position="bottom center"><i class="settings icon"></i>settings</a></b> and add at least one (1) workflow.
+    </div>
 {% endfor %}
 </div>
-
-{#<ul id="sortable1" class="connectedSortable">
-  <li class="ui-state-default">Item 1</li>
-  <li class="ui-state-default">Item 2</li>
-  <li class="ui-state-default">Item 3</li>
-  <li class="ui-state-default">Item 4</li>
-  <li class="ui-state-default">Item 5</li>
-</ul>
- 
-<ul id="sortable2" class="connectedSortable">
-  <li class="ui-state-highlight">Item 1</li>
-  <li class="ui-state-highlight">Item 2</li>
-  <li class="ui-state-highlight">Item 3</li>
-  <li class="ui-state-highlight">Item 4</li>
-  <li class="ui-state-highlight">Item 5</li>
-</ul>#}
- 

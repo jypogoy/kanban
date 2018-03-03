@@ -6,7 +6,7 @@ class ControllerBase extends Controller
 {
     protected function initialize()
     {
-        $this->tag->prependTitle('OPENPOC | ');
+        $this->tag->prependTitle('Kanban | ');
         $this->view->setTemplateAfter('main');
     }
 

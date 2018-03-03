@@ -131,7 +131,7 @@ class BoardsController extends ControllerBase
 
         try {
             // The data set to paginate
-            $boards = board::find($parameters);
+            $boards = Board::find($parameters);
             
         } catch (\Exception $e) {
             $this->flash->error($e->getMessage());
@@ -177,7 +177,7 @@ class BoardsController extends ControllerBase
      */
     public function newAction()
     {
-        $this->view->form = new boardForm(null, array('edit' => true));
+        $this->view->form = new BoardForm(null, array('edit' => true));
     }
 
     /**
@@ -194,8 +194,8 @@ class BoardsController extends ControllerBase
             );
         }
 
-        $form = new boardForm();
-        $board = new board();
+        $form = new BoardForm();
+        $board = new Board();
         $messages = [];
 
         $data = $this->request->getPost();
@@ -235,7 +235,7 @@ class BoardsController extends ControllerBase
         $this->flashSession->success("Board <b>" . $board->name . "</b>  was created successfully.");
 
         $is_saveNew = $this->request->getPost('saveNew');
-        if ($is_saveNew == 1) {
+        if ($is_saveNew == 'true') {
             return $this->response->redirect('boards/new');
         } else {
             return $this->response->redirect('boards');
@@ -249,14 +249,14 @@ class BoardsController extends ControllerBase
     {
         if (!$this->request->isPost()) {
 
-            $board = board::findFirstById($id);
+            $board = Board::findFirstById($id);
             if (!$board) {
                 $this->flashSession->error("Board was not found.");
                 return $this->response->redirect('boards');
             }
 
             $this->view->board = $board;
-            $this->view->form = new boardForm($board, array('edit' => true));
+            $this->view->form = new BoardForm($board, array('edit' => true));
         }
     }
 
@@ -276,13 +276,13 @@ class BoardsController extends ControllerBase
 
         $id = $this->request->getPost("id", "int");
 
-        $board = board::findFirstById($id);
+        $board = Board::findFirstById($id);
         if (!$board) {
             $this->flashSession->error("Board does not exists.");
             return $this->response->redirect('boards');
         }
 
-        $form = new boardForm($board);
+        $form = new BoardForm($board);
         $this->view->form = $form;
 
         $data = $this->request->getPost();
@@ -330,7 +330,7 @@ class BoardsController extends ControllerBase
     public function deleteAction($id)
     {
         $messages = [];
-        $board = board::findFirstById($id);
+        $board = Board::findFirstById($id);
         if (!$board) {
             $this->flashSession->error("Board was not found.");
             return $this->response->redirect('boards');
@@ -361,7 +361,7 @@ class BoardsController extends ControllerBase
      */
     public function profileAction($id)
     {
-        $board = board::findFirstById($id);
+        $board = Board::findFirstById($id);
         if (!$board) {
             $this->flashSession->error("Board was not found.");
             return $this->response->redirect('boards');
@@ -378,7 +378,7 @@ class BoardsController extends ControllerBase
 
     public function settingsAction($id)
     {
-        $board = board::findFirstById($id);
+        $board = Board::findFirstById($id);
         if (!$board) {
             $this->flashSession->error("Board was not found.");
             return $this->response->redirect('boards');
@@ -395,7 +395,7 @@ class BoardsController extends ControllerBase
 
     public function boardAction($id)
     {
-        $board = board::findFirstById($id);
+        $board = Board::findFirstById($id);
         if (!$board) {
             $this->flashSession->error("Board was not found.");
             return $this->response->redirect('boards');
