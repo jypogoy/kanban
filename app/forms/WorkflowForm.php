@@ -35,7 +35,7 @@ class WorkflowForm extends Form
             $this->add($boardId->setLabel("board Id"));
         } else {
             $this->add(new Hidden("id"));
-            $this->add(new Hidden("board_id"));
+            $this->add(new Hidden ("board_id"));
         }
         
         // Add a text element to capture the 'name'

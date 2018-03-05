@@ -384,16 +384,16 @@ class BoardsController extends ControllerBase
             return $this->response->redirect('boards');
         }
 
-        $workflows = Workflow::findByboardId($id);  
+        //$workflows = Workflow::findByboardId($id);  
         $workflowForm = new WorkflowForm(new Workflow(), array('edit' => true));
         $this->view->workflowForm = $workflowForm;
-        $this->view->workflows = $workflows;
+        //$this->view->workflows = $workflows;
         
 
-        $tags = Tag::findByboardId($id);  
+        //$tags = Tag::findByboardId($id);  
         $tagForm = new TagForm(new Tag(), array('edit' => true));
         $this->view->tagForm = $tagForm;
-        $this->view->tags = $tags;
+        //$this->view->tags = $tags;
 
         $this->view->board = $board;               
 

@@ -1,58 +1,68 @@
 $(function () {
-    // Sortable rows
-    $( ".sorted_table").sortable({
-        containerSelector: 'table',
-        itemPath: '> tbody',
-        itemSelector: 'tr',
-        placeholder: '<tr class="placeholder"/>'
-    });
+    
+    loadWorkflowList();    
 
-    // Sortable column heads
-    var oldIndex;
-    $('.sorted_table tr').sortable({
-        containerSelector: 'tr',
-        itemSelector: 'th',
-        placeholder: '<th class="placeholder"/>',
-        vertical: false,
-        onDragStart: function ($item, container, _super) {
-            oldIndex = $item.index();
-            $item.appendTo($item.parent());
-            _super($item, container);
-        },
-        onDrop: function  ($item, container, _super) {
-            var field,
-                newIndex = $item.index();
-
-            if(newIndex != oldIndex) {
-            $item.closest('table').find('tbody tr').each(function (i, row) {
-                row = $(row);
-                if(newIndex < oldIndex) {
-                row.children().eq(newIndex).before(row.children()[oldIndex]);
-                } else if (newIndex > oldIndex) {
-                row.children().eq(newIndex).after(row.children()[oldIndex]);
-                }
-            });
-            }
-
-            _super($item, container);
+    $('#workflowTable tbody').sortable({
+        cursor: 'move',
+        update:function(event, ui){
+            let el = $(this).data().uiSortable.currentItem;
+            console.log(el[0].innerText);
         }
-    });
-
-    $('#btnAddWorkflow').on('click', function () {
-        clear(); // See form.js
-        $('#project_id').val($('#projectId').val());
-        modals.showWorkflow();
-    });
+    }).disableSelection();
+    
+    $('#btnAddWorkflow').on('click', function () {       
+        $('#board_id').val($('#boardId').val());       
+        $('#newActions').show();
+        $('#editActions').hide();
+        WorkFlowModal.show();
+        Form.reset(); // See form.js
+    });        
 });
 
-function editWorkflow(id) {
-    clear(); // See form.js
+function loadWorkflowList() {    
+    $.get('../../workflows/listbyboard/' + $('#boardId').val(), function (data) {
+        $('#workflowTable tbody tr').remove();
+        for (let i = 0; i < data.length; i++) {
+            const rec = data[i];
+            $('#workflowTable tbody').append(
+                '<tr>' +
+                '<td><div data-tooltip="Move" data-position="right center"><i class="ellipsis vertical icon move"></i><i class="ellipsis vertical icon move pair"></i></div></td>' +
+                '<td>' + rec.name + '</td>' + 
+                '<td>' + rec.description + '</td>' + 
+                '<td>' +
+                    '<a class="ui icon" data-tooltip="Edit" data-position="bottom center" onclick="editWorkflow(' + rec.id + ');">' +
+                        '<i class="edit icon"></i>' +
+                    '</a>' +
+                    '<a class="ui icon" onclick="del(this, \'' + rec.id + '\', \'' + rec.name + '\'); return false;" data-tooltip="Delete" data-position="bottom center">' +
+                        '<i class="remove red icon"></i>' +
+                    '</a>' +
+                '</td>' +
+                '</tr>');                                              
+        }    
+        
+        if (data.length == 0) {
+            $('#workflowTable tbody').append('<tr><td colspan="4">No workflows to show...</td></tr>'); 
+        }        
+    })
+    .done(function (data) {
+        $('.loader').fadeOut();
+    })
+    .fail(function (xhr, status, error) {
+        toastr.error(error);
+    });
+}
+
+function editWorkflow(id) {    
     $.post('../../workflows/get/' + id, function (data) {
         $('form *').filter(':input').each(function () {
             var el = this;
             el.value = data[0][el.id]; 
         });  
-        modals.showWorkflow();
+       
+        $('#newActions').hide();
+        $('#editActions').show();
+        WorkFlowModal.show();
+        Form.reset(true); // See form.js
     })
     .done(function (msg) {
         // Do nothing...
@@ -63,45 +73,40 @@ function editWorkflow(id) {
 }
 
 function saveWorkflow(isSaveNew) {    
-    var isValid = Form.validate(true); // See form.js    
+    var isValid = Form.validate(true, isSaveNew); // See form.js (isAjax, isSaveNew)   
     if (isValid) {        
         var id = $('#id').val();
-        var form = $('#dataForm_Workflow')[0];
-        form.action = id ? '../../workflows/save' : '../../workflows/create';
-        form.submit();
+        var boardId = $('#boardId').val(); // Keep reference of the board
+        var action = id ? '../../workflows/ajaxsave' : '../../workflows/ajaxcreate';
         
-        // $.post(action, $('form').serialize(), function (msg) {  
-        //     alert(msg);  
-        //     var startPos = msg.indexOf('>') + 1;
-        //     var endPos = msg.indexOf('<', startPos);
-        //     var textMsg = msg.substring(startPos, endPos);  
-        //     if (msg.indexOf('danger') != -1) {                
-        //         toastr.error(textMsg);
-        //     } else if (msg.indexOf('success') != -1) {                
-        //         toastr.success(textMsg);
-        //     }            
-        // })
-        // .done(function (msg) {
-        //     if (isSaveNew) {
-        //         clear(); // See form.js
-        //     } else {                
-        //         modals.hideWorkflow();
-        //     }
-        //     $('.loader').fadeIn();
-        //     //location.reload();
-        //     loadWorkflowList();
-        // })
-        // .fail(function (xhr, status, error) {
-        //     toastr.error(error);
-        // });
+        // Assign the foreign key to the form's board id element
+        $('form').filter(":visible").find('#board_id').val(boardId);
+
+        $.post(action, $('form').serialize(), function (msg) {  
+            // Do nothing...      
+        })
+        .done(function (msg) {
+            toastr.success(msg);
+            if (isSaveNew) {
+                Form.reset(); // See form.js
+                $('form').filter(":visible").find('#board_id').val(boardId); // Fill board if save and new                                          
+            } else {                
+                WorkFlowModal.hide();
+            }
+            $('.loader').fadeIn();
+            loadWorkflowList();
+        })
+        .fail(function (xhr, status, error) {
+            toastr.error(error);
+        });
     }    
 }
 
-function del(id, name) {
+function del(actionEl, id, name) {
 
     $('.custom-text').html('<p>Are you sure you want to delete workflow <strong>' + name + '</strong>? Click OK to proceed.</p>');
 
-    $('.ui.tiny.modal.delete')
+    $('.ui.tiny.modal.delete.workflow')
     .modal({
         inverted : true,
         closable : true,
@@ -110,15 +115,26 @@ function del(id, name) {
             // Do nothing
         },
         onApprove : function() {
-            window.location = '../../workflows/delete/' + id;
+            var action = '../../workflows/ajaxdelete/' + id;
+            $.post(action, function (msg) {  
+                // Do nothing...      
+            })
+            .done(function (msg) {            
+                var row = $(actionEl).closest('tr');
+                highlightOnDelete(row, 'No workflows to show...', 4); // See list.js
+                toastr.success(msg); // See toaster.js
+            })
+            .fail(function (xhr, status, error) {
+                toastr.error(error);
+            });
         }
     })
     .modal('show');
 
 }
 
-var modals = {
-    showWorkflow : function () {
+var WorkFlowModal = {
+    show : function () {
         $('.ui.tiny.modal.flow')
         .modal('setting',
         {
@@ -128,13 +144,13 @@ var modals = {
                 // Do nothing
             },
             onApprove : function() {
-                //window.location = 'projects/delete/' + id;
+                //window.location = 'boards/delete/' + id;
             }
         })
         .modal('setting', { detachable:false })
         .modal('show');
     },
-    hideWorkflow : function () {
+    hide : function () {
         $('.ui.tiny.modal.flow').modal('hide');
     }
 }

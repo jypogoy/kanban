@@ -186,7 +186,7 @@ textarea {
     background-color: #cedf8b;
  }
 
-.ui.dropdown .menu {
+.ui.dropdown.onmodal .menu {
+    position: relative;
     z-index: 999999 !important;
-    color: red;
 }

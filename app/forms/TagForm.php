@@ -57,8 +57,8 @@ class TagForm extends Form
         $this->add($description);      
 
         $color = new Select(            
-            'Color',
-            [
+            'color',
+            [   
                 ''          => '- Choose a color -',
                 'Red'       => 'Red',
                 'Orange'    => 'Orange',
@@ -73,9 +73,15 @@ class TagForm extends Form
                 'Brown'     => 'Brown',
                 'Grey'      => 'Grey',
                 'Black'     => 'Black' 
-            ]          
+            ] 
         );
-        $color->setAttribute('class', 'ui dropdown');
+        $color->setUserOptions([
+            'useEmpty'   => true,
+            'emptyText'  => 'Please, choose one...',
+            'emptyValue' => '@'
+        ]);
+        $color->setLabel('Color');
+        $color->setAttribute('class', 'ui dropdown onmodal');
         $this->add($color);
 
         // Add a text element to put a hidden CSRF

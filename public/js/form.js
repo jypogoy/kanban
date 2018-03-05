@@ -1,6 +1,6 @@
 $(function () {
     Form.setFocus();    
-    $("form .alert").hide();    
+    $("form .alert").hide();
 });
 
 var Form = {
@@ -37,14 +37,19 @@ var Form = {
         $('form').find("input:visible:first").focus(); 
     },
     reset: function (isEdit) {
-        $('form *').filter(':input:visible').each(function () {
+        $('form *').filter(':input:visible, select').each(function () {
             var el = this;    
             var form = el.closest('form');                     
             $(form).find("#" + el.id + "_div").removeClass('error');
             $(form).find("#" + el.id + "_alert").addClass('hidden');
             $(form).find("#" + el.id + "_alert").removeClass('visible');
-            $(el).val('');
-            $(el).empty();
+            if (!isEdit) {
+                $(el).val('');                
+                if ($(el).is('select')) {
+                    console.log(el);
+                    //TODO $('.ui.dropdown').dropdown('refresh');
+                }
+            }
         }); 
         this.setFocus();
     }

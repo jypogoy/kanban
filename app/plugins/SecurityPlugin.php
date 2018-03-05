@@ -48,7 +48,7 @@ class SecurityPlugin extends Plugin
 			$privateResources = [
 				'boards'	   => ['index', 'new', 'create', 'edit', 'save', 'delete', 'profile', 'board', 'settings'],
 				'workflows'	   => ['get', 'create', 'save', 'delete', 'listbyboard', 'ajaxcreate', 'ajaxsave', 'ajaxdelete'],
-				'tags'		   => ['listbyboard', 'ajaxcreate', 'ajaxsave', 'ajaxdelete']	
+				'tags'		   => ['listbyboard', 'create', 'get', 'save', 'delete']	
 			];
 			foreach ($privateResources as $resource => $actions) {
 				$acl->addResource(new Resource($resource), $actions);
