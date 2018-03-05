@@ -1,6 +1,6 @@
 <div class="ui segment">
     <a class="ui blue ribbon label"><i class="random icon"></i>WORK FLOW</a>
-    <button class="ui right floated icon small primary button" id="btnAddWorkflow" data-tooltip="Add work flow" data-position="bottom center">
+    <button class="ui right floated icon small primary button" id="btnAddWorkflow" data-tooltip="Add Work Flow" data-position="bottom center">
         <i class="plus icon"></i>
     </button>
     <p></p>
@@ -30,15 +30,16 @@
 
         {{ form('', 'id' : 'dataForm_Workflow', 'class' : 'ui form', 'autocomplete' : 'off') }}
        
-            {% for element in form %}
-                
+            {% for element in workflowForm %}                
                 {% if is_a(element, 'Phalcon\Forms\Element\Hidden') %}
                     {{ element }}           
                 {% else %}
-                    <div id="{{ element.getName() }}_div" class="{{ element.getValidators() | length > 0 ? 'required' : '' }} field">
+                    <div id="{{ element.getName() }}_div" class="{{ element.getAttribute('required') ? 'required' : '' }} field">
                         {{ element.label() }}
                         {{ element.render() }}
-                        <div class="ui basic red pointing prompt label transition hidden" id="name_alert">Please enter a work flow name</div>
+                        <div class="ui basic red pointing prompt label transition hidden" id="{{ element.getName() }}_alert" style="text-align: left;">
+                            <i class="warning icon"></i>{{ element.getAttribute('requiredMsg') }}
+                        </div>
                     </div>
                 {% endif %}
             {% endfor %}
@@ -62,6 +63,6 @@
     </div>
 </div>
 
-{{ modals.getConfirmation('delete', 'Workflow') }}
+{{ modals.getConfirmation('delete', 'workflow') }}
 
 {{ javascript_include('js/boards_workflows_ajax.js') }}

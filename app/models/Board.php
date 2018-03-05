@@ -27,6 +27,13 @@ class Board extends \Phalcon\Mvc\Model
     public $description;
 
     /**
+     *
+     * @var string
+     * @Column(type="string", nullable=false)
+     */
+    public $date_created;
+
+    /**
      * Initialize method for model.
      */
     public function initialize()

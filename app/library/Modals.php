@@ -16,7 +16,7 @@ class Modals extends Component
 
         //$controllerName = $this->view->getControllerName();
 
-        $content = '<div class="ui tiny modal '. $action . '">
+        $content = '<div class="ui tiny modal '. $action . ' ' . $entityName . '">
                         <i class="close icon"></i>
                         <div class="header">
                             <i class="trash outline icon"></i> ' . ucwords($action) . ' ' . ucwords($entityName) . '

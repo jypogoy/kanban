@@ -91,7 +91,6 @@ textarea {
 }
 
 .move.icon {
-    cursor: move;
     color: #292929;
 }
 
@@ -186,3 +185,8 @@ textarea {
 .highlight {
     background-color: #cedf8b;
  }
+
+.ui.dropdown .menu {
+    z-index: 999999 !important;
+    color: red;
+}

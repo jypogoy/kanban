@@ -12,12 +12,13 @@
 
 <div class="ui equal width stackable divided grid">
 {% for workflow in workflows %}
-    <div class="column">    
-        <h3 class="ui dividing header">
+    <div class="column">     
+        <h3 class="ui dividing header" style="text-align: center;">        
           {{ workflow.name }}   
-          <div class="ui grey label">3 / 3</div>  
-          <a data-tooltip="Add Task" data-position="bottom center" style="float:right;"><i class="plus icon"></i></a>           
-        </h3>  
+          <div class="ui lightgrey label">3 / 3</div>
+          <a data-tooltip="New Card" data-position="bottom center" style="float:right;"><i class="plus icon"></i></a>
+        </h3>
+        {#<a class="ui large blue ribbon label">{{ workflow.name }}</a>#}
         <ul id="sortable_{{ workflow.id }}" class="connectedSortable">
             <li>
                 <div class="ui red card">                    
@@ -215,7 +216,7 @@
                     </div> 
                 </div>
             </li>
-        </ul>
+        </ul>        
     </div>
 {% else %}
     <div class="ui warning message" style="margin: 10px 0px 0px 10px;">

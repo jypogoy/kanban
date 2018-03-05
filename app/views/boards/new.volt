@@ -9,10 +9,12 @@
         {% if is_a(element, 'Phalcon\Forms\Element\Hidden') %}
             {{ element }}
         {% else %}
-            <div id="{{ element.getName() }}_div" class="{{ element.getValidators() | length > 0 ? 'required' : '' }} field">
+            <div id="{{ element.getName() }}_div" class="{{ element.getAttribute('required') ? 'required' : '' }} field">
                 {{ element.label() }}
                 {{ element.render() }}
-                <div class="ui basic red pointing prompt label transition hidden" id="name_alert">Please enter a board name</div>
+                <div class="ui basic red pointing prompt label transition hidden" id="{{ element.getName() }}_alert">
+                    <i class="warning icon"></i>{{ element.getAttribute('requiredMsg') }}
+                </div>
             </div>
         {% endif %}
     {% endfor %}

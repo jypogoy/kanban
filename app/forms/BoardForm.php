@@ -38,6 +38,8 @@ class BoardForm extends Form
         $name = new Text('name');
         $name->setLabel('Board Name');
         $name->setFilters(['striptags', 'string']);
+        $name->setAttribute('required', 'true');
+        $name->setAttribute('requiredMsg', 'Please specify a board name.');
         $name->addValidators([
             new PresenceOf([
                 'message' => 'Name is required'

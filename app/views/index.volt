@@ -25,9 +25,9 @@
     </head>
     <body>
         {{ javascript_include('js/jquery-3.3.1.min.js') }}        
-        {{ content() }}        
-        {{ javascript_include('semantic/semantic.min.js') }}
+        {{ content() }}                
         {{ javascript_include('jqueryui/jquery-ui.min.js') }}       
+        {{ javascript_include('semantic/semantic.min.js') }}
         {#{ javascript_include('js/jquery-sortable.js') }#} 
         {{ javascript_include('toastr/toastr.min.js') }}
         {#{ javascript_include('snackbar/snackbar.min.js') }#}

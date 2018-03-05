@@ -4,11 +4,11 @@ use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\TextArea;
 use Phalcon\Forms\Element\Hidden;
+use Phalcon\Forms\Element\Select;
 use Phalcon\Forms\Element\Submit;
 use Phalcon\Validation\Validator\PresenceOf;
-use Phalcon\Validation\Validator\Email;
 
-class WorkflowForm extends Form
+class TagForm extends Form
 {
 
     /**
@@ -32,7 +32,7 @@ class WorkflowForm extends Form
             $id->setLabel("Id");            
             $this->add($id);
             $boardId = new Text("board_id");
-            $this->add($boardId->setLabel("board Id"));
+            $this->add($boardId->setLabel("Board Id"));
         } else {
             $this->add(new Hidden("id"));
             $this->add(new Hidden("board_id"));
@@ -43,7 +43,7 @@ class WorkflowForm extends Form
         $name->setLabel('Name');
         $name->setFilters(['striptags', 'string']);
         $name->setAttribute('required', 'true');
-        $name->setAttribute('requiredMsg', 'Please specify a workflow name.');
+        $name->setAttribute('requiredMsg', 'Please specify a tag name.');
         $name->addValidators([
             new PresenceOf([
                 'message' => 'Name is required'
@@ -55,6 +55,28 @@ class WorkflowForm extends Form
         $description->setLabel('Description');
         $description->setFilters(['striptags', 'string']);        
         $this->add($description);      
+
+        $color = new Select(            
+            'Color',
+            [
+                ''          => '- Choose a color -',
+                'Red'       => 'Red',
+                'Orange'    => 'Orange',
+                'Yellow'    => 'Yellow',
+                'Olive'     => 'Olive',
+                'Green'     => 'Green',
+                'Teal'      => 'Teal',
+                'Blue'      => 'Blue',
+                'Violet'    => 'Violet',
+                'Purple'    => 'Purple',
+                'Pink'      => 'Pink',
+                'Brown'     => 'Brown',
+                'Grey'      => 'Grey',
+                'Black'     => 'Black' 
+            ]          
+        );
+        $color->setAttribute('class', 'ui dropdown');
+        $this->add($color);
 
         // Add a text element to put a hidden CSRF
         $this->add(

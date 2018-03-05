@@ -2,52 +2,20 @@ $(function () {
     
     loadWorkflowList();    
 
-    // Sortable rows. See jquery-sortable.js
-    // $( ".sorted_table").sortable({
-    //     containerSelector: 'table',
-    //     itemPath: '> tbody',
-    //     itemSelector: 'tr',
-    //     placeholder: '<tr class="placeholder"/>'
-    // });
-
-    // Sortable column heads
-    var oldIndex;
-    $('.sorted_table tr').sortable({
-        containerSelector: 'tr',
-        itemSelector: 'th',
-        placeholder: '<th class="placeholder"/>',
-        vertical: false,
-        onDragStart: function ($item, container, _super) {
-            oldIndex = $item.index();
-            $item.appendTo($item.parent());
-            _super($item, container);
-        },
-        onDrop: function  ($item, container, _super) {
-            var field,
-                newIndex = $item.index();
-
-            if(newIndex != oldIndex) {
-            $item.closest('table').find('tbody tr').each(function (i, row) {
-                row = $(row);
-                if(newIndex < oldIndex) {
-                row.children().eq(newIndex).before(row.children()[oldIndex]);
-                } else if (newIndex > oldIndex) {
-                row.children().eq(newIndex).after(row.children()[oldIndex]);
-                }
-            });
-            }
-
-            _super($item, container);
+    $('#workflowTable tbody').sortable({
+        cursor: 'move',
+        update:function(event, ui){
+            let el = $(this).data().uiSortable.currentItem;
+            console.log(el[0].innerText);
         }
-    });
-
-    $('#btnAddWorkflow').on('click', function () {
-        clear(); // See form.js
-        $('#board_id').val($('#boardId').val());
-       
+    }).disableSelection();
+    
+    $('#btnAddWorkflow').on('click', function () {       
+        $('#board_id').val($('#boardId').val());       
         $('#newActions').show();
         $('#editActions').hide();
-        modals.showWorkflow();
+        workFlowModal.show();
+        Form.reset(); // See form.js
     });
 });
 
@@ -84,8 +52,7 @@ function loadWorkflowList() {
     });
 }
 
-function editWorkflow(id) {
-    clear(); // See form.js
+function editWorkflow(id) {    
     $.post('../../workflows/get/' + id, function (data) {
         $('form *').filter(':input').each(function () {
             var el = this;
@@ -94,7 +61,8 @@ function editWorkflow(id) {
        
         $('#newActions').hide();
         $('#editActions').show();
-        modals.showWorkflow();
+        workFlowModal.show();
+        Form.reset(true); // See form.js
     })
     .done(function (msg) {
         // Do nothing...
@@ -105,7 +73,7 @@ function editWorkflow(id) {
 }
 
 function saveWorkflow(isSaveNew) {    
-    var isValid = Form.validate(true); // See form.js    
+    var isValid = Form.validate(true, isSaveNew); // See form.js (isAjax, isSaveNew)   
     if (isValid) {        
         var id = $('#id').val();
         var boardId = $('#board_id').val(); // Keep reference of the board
@@ -117,10 +85,10 @@ function saveWorkflow(isSaveNew) {
         .done(function (msg) {
             toastr.success(msg);
             if (isSaveNew) {
-                clear(); // See form.js
+                Form.reset(); // See form.js
                 $('#board_id').val(boardId); // Fill board if save and new                                          
             } else {                
-                modals.hideWorkflow();
+                workFlowModal.hide();
             }
             $('.loader').fadeIn();
             loadWorkflowList();
@@ -135,7 +103,7 @@ function del(actionEl, id, name) {
 
     $('.custom-text').html('<p>Are you sure you want to delete workflow <strong>' + name + '</strong>? Click OK to proceed.</p>');
 
-    $('.ui.tiny.modal.delete')
+    $('.ui.tiny.modal.delete.workflow')
     .modal({
         inverted : true,
         closable : true,
@@ -148,9 +116,10 @@ function del(actionEl, id, name) {
             $.post(action, function (msg) {  
                 // Do nothing...      
             })
-            .done(function (msg) {                               
+            .done(function (msg) {            
                 var row = $(actionEl).closest('tr');
-                highlightOnDelete(row);              
+                highlightOnDelete(row); // See list.js
+                toastr.success(msg); // See toaster.js
             })
             .fail(function (xhr, status, error) {
                 toastr.error(error);
@@ -161,8 +130,8 @@ function del(actionEl, id, name) {
 
 }
 
-var modals = {
-    showWorkflow : function () {
+var workFlowModal = {
+    show : function () {
         $('.ui.tiny.modal.flow')
         .modal('setting',
         {
@@ -178,7 +147,7 @@ var modals = {
         .modal('setting', { detachable:false })
         .modal('show');
     },
-    hideWorkflow : function () {
+    hide : function () {
         $('.ui.tiny.modal.flow').modal('hide');
     }
 }

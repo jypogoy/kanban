@@ -59,6 +59,8 @@ class WorkflowsController extends ControllerBase
             exit;
         }
                 
+        $this::updateSequence();
+
         return "Workflow " . $data['name'] . " was created successfully.";  
     }    
 
@@ -105,7 +107,9 @@ class WorkflowsController extends ControllerBase
             }
             exit;
         }
-                
+         
+        $this::updateSequence();
+
         return $successMsg;
     }
 
@@ -181,8 +185,21 @@ class WorkflowsController extends ControllerBase
             }
             exit;
         }
+
+        $this::updateSequence();
                 
         return $successMsg;
+    }
+
+    public function updateSequence()
+    {
+        $workflows = WorkFlow::find(['order' => 'date_created ASC']);
+        $sequence = 1;
+        foreach ($workflows as $workflow) {
+            $workflow->sequence = $sequence;
+            $workflow->save();
+            $sequence++;
+        }
     }
 
     /**
@@ -206,9 +223,5 @@ class WorkflowsController extends ControllerBase
         $this->response->send();        
     }
 
-    public function ajaxUpdateOrder()
-    {
-
-    }
 }
 

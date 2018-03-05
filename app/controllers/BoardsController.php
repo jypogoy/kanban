@@ -385,11 +385,18 @@ class BoardsController extends ControllerBase
         }
 
         $workflows = Workflow::findByboardId($id);  
-        $form = new WorkflowForm(new Workflow(), array('edit' => true));
-
-        $this->view->board = $board;
+        $workflowForm = new WorkflowForm(new Workflow(), array('edit' => true));
+        $this->view->workflowForm = $workflowForm;
         $this->view->workflows = $workflows;
-        $this->view->form = $form;
+        
+
+        $tags = Tag::findByboardId($id);  
+        $tagForm = new TagForm(new Tag(), array('edit' => true));
+        $this->view->tagForm = $tagForm;
+        $this->view->tags = $tags;
+
+        $this->view->board = $board;               
+
         $this->view->setTemplateAfter('board');
     }
 

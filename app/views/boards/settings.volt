@@ -2,8 +2,7 @@
 
 {{ hidden_field('id', 'id' : 'boardId', 'value' : board.id) }}
 
-{% include 'boards/tab_settings_workflow_segment.volt' %} 
-{% include 'boards/tab_settings_tags.volt' %}
-{% include 'boards/tab_settings_colors.volt' %}
+{% include 'boards/settings_workflows.volt' %} 
+{% include 'boards/settings_tags.volt' %}
 
 {{ alert.getRedirectMessage() }}

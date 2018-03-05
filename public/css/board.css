@@ -21,7 +21,7 @@
     list-style-type: none;
     width: 100%;
     min-height: 600px;    
-    padding: 5px;
+    padding: 0px;
     float: left;
 }
 [id^='sortable_'] li {
