@@ -12,6 +12,7 @@
                 <th width="1%"></th>
                 <th class="five wide">NAME</th>
                 <th class="nine wide">DESCRIPTION</th>
+                <th class="one wide">LIMIT</th>
                 <th></th>
             </tr>
         </thead>

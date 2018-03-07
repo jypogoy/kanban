@@ -6,7 +6,8 @@ $(function () {
         cursor: 'move',
         update:function(event, ui){
             let el = $(this).data().uiSortable.currentItem;
-            console.log(el[0].innerText);
+            //console.log(el[0]);
+            console.log($(el).parent().children().index(el));
         }
     }).disableSelection();
     
@@ -27,8 +28,9 @@ function loadWorkflowList() {
             $('#workflowTable tbody').append(
                 '<tr>' +
                 '<td><div data-tooltip="Move" data-position="right center"><i class="ellipsis vertical icon move"></i><i class="ellipsis vertical icon move pair"></i></div></td>' +
-                '<td>' + rec.name + '</td>' + 
+                '<td>' + rec.sequence + ' : ' + rec.name + '</td>' + 
                 '<td>' + rec.description + '</td>' + 
+                '<td>' + (rec.limit > 0 ? rec.limit : '<span class="small text-muted">None</span>') + '</td>' + 
                 '<td>' +
                     '<a class="ui icon" data-tooltip="Edit" data-position="bottom center" onclick="editWorkflow(' + rec.id + ');">' +
                         '<i class="edit icon"></i>' +

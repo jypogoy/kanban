@@ -20,7 +20,7 @@ function loadTagList() {
                 '<tr>' +
                 '<td><div class="ui ' + rec.color.toLowerCase() + ' tag label">'  + rec.name + '</td>' + 
                 '<td>' + rec.description + '</td>' + 
-                '<td><i class="' + rec.color.toLowerCase() + ' circle icon"></i>' + rec.color + '</td>' +
+                '<td><i class="' + (rec.color ? rec.color.toLowerCase() + ' circle icon' : '') + '"></i>' + rec.color + '</td>' +
                 '<td>' +
                     '<a class="ui icon" data-tooltip="Edit" data-position="bottom center" onclick="editTag(' + rec.id + ');">' +
                         '<i class="edit icon"></i>' +

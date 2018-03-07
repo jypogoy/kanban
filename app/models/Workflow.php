@@ -15,9 +15,9 @@ class Workflow extends \Phalcon\Mvc\Model
     /**
      *
      * @var integer
-     * @Column(type="integer", length=2, nullable=true)
+     * @Column(type="integer", nullable=true)
      */
-    public $order;
+    public $sequence;
 
     /**
      *
@@ -41,12 +41,12 @@ class Workflow extends \Phalcon\Mvc\Model
      */
     public $board_id;
 
-      /**
+     /**
      *
      * @var integer
      * @Column(type="integer", length=2, nullable=true)
      */
-    public $sequence;
+    public $limit = 0;
 
     /**
      *

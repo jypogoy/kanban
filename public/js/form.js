@@ -45,11 +45,9 @@ var Form = {
             $(form).find("#" + el.id + "_alert").removeClass('visible');
             if (!isEdit) {
                 $(el).val('');                
-                if ($(el).is('select')) {
-                    console.log(el);
-                    //TODO $('.ui.dropdown').dropdown('refresh');
-                }
-            }
+                if ($(el).is('select')) $(el).dropdown('clear');        
+                if (el.type == 'number') $(el).val(0);        
+            }            
         }); 
         this.setFocus();
     }

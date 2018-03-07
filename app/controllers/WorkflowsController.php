@@ -108,7 +108,7 @@ class WorkflowsController extends ControllerBase
             exit;
         }
          
-        $this::updateSequence();
+        $this::updateSequence();        
 
         return $successMsg;
     }
@@ -193,7 +193,11 @@ class WorkflowsController extends ControllerBase
 
     public function updateSequence()
     {
-        $workflows = WorkFlow::find(['order' => 'date_created ASC']);
+        $workflows = WorkFlow::find([
+            'condition' => 'board_id = ',
+            'order' => 'date_created ASC'
+            //TODO
+        ]);
         $sequence = 1;
         foreach ($workflows as $workflow) {
             $workflow->sequence = $sequence;

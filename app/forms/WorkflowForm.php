@@ -4,6 +4,7 @@ use Phalcon\Forms\Form;
 use Phalcon\Forms\Element\Text;
 use Phalcon\Forms\Element\TextArea;
 use Phalcon\Forms\Element\Hidden;
+use Phalcon\Forms\Element\Numeric;
 use Phalcon\Forms\Element\Submit;
 use Phalcon\Validation\Validator\PresenceOf;
 use Phalcon\Validation\Validator\Email;
@@ -55,6 +56,11 @@ class WorkflowForm extends Form
         $description->setLabel('Description');
         $description->setFilters(['striptags', 'string']);        
         $this->add($description);      
+
+        // Add a text element to capture the 'name'
+        $limit = new Numeric('limit');
+        $limit->setLabel('Limit');
+        $this->add($limit);        
 
         // Add a text element to put a hidden CSRF
         $this->add(
