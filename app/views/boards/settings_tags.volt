@@ -12,7 +12,7 @@
                 <th class="five wide">NAME</th>
                 <th class="eight wide">DESCRIPTION</th>
                 <th>COLOR</th>
-                <th></th>
+                <th class="two wide"></th>
             </tr>
         </thead>
         <tbody>

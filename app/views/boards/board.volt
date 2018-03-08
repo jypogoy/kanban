@@ -10,7 +10,7 @@
 {{ alert.getRedirectMessage() }}
 {{ javascript_include('js/boards_board.js') }}
 
-<div class="ui equal width stackable divided grid">
+<div id="sortable_grid" class="ui equal width stackable divided grid connectedGridSortable" style="margin-top: 0px;">
 {% for workflow in workflows %}
     <div class="column">     
         <h3 class="ui dividing header" style="text-align: center;">        

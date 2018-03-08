@@ -47,7 +47,7 @@ class SecurityPlugin extends Plugin
 			//Private area resources
 			$privateResources = [
 				'boards'	   => ['index', 'new', 'create', 'edit', 'save', 'delete', 'profile', 'board', 'settings'],
-				'workflows'	   => ['get', 'create', 'save', 'delete', 'listbyboard', 'ajaxcreate', 'ajaxsave', 'ajaxdelete'],
+				'workflows'	   => ['get', 'create', 'save', 'delete', 'listbyboard', 'ajaxcreate', 'ajaxsave', 'ajaxdelete', 'switchsequence'],
 				'tags'		   => ['listbyboard', 'create', 'get', 'save', 'delete']	
 			];
 			foreach ($privateResources as $resource => $actions) {

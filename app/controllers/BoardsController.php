@@ -397,7 +397,7 @@ class BoardsController extends ControllerBase
 
         $this->view->board = $board;               
 
-        $this->view->setTemplateAfter('board');
+        $this->view->setTemplateAfter('main');
     }
 
     public function boardAction($id)
@@ -407,8 +407,16 @@ class BoardsController extends ControllerBase
             $this->flashSession->error("Board was not found.");
             return $this->response->redirect('boards');
         }
+        
+        $parameters = $this->persistent->parameters;
+        if (!is_array($parameters)) {
+            $parameters = [];
+        }
+        $parameters['conditions'] = "board_id = " . $id;
+        $parameters['order'] = "sequence ASC";
+        
+        $workflows = Workflow::find($parameters);
 
-        $workflows = Workflow::findByboardId($id);  
         $form = new WorkflowForm(new Workflow(), array('edit' => true));
 
         $this->view->board = $board;

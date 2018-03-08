@@ -191,18 +191,67 @@ class WorkflowsController extends ControllerBase
         return $successMsg;
     }
 
-    public function updateSequence()
+    public function updateSequence($boardId)
     {
         $workflows = WorkFlow::find([
-            'condition' => 'board_id = ',
-            'order' => 'date_created ASC'
-            //TODO
+            'condition' => 'board_id = ?1',
+            'bind'      => [
+                1 => $boardId
+            ],
+            'order'     => 'date_created ASC'            
         ]);
         $sequence = 1;
         foreach ($workflows as $workflow) {
             $workflow->sequence = $sequence;
             $workflow->save();
             $sequence++;
+        }
+    }
+
+    /**
+     * Ajax call to switch workflow sequences using move by drag and drop.
+     */
+    public function switchSequenceAction()
+    {
+        $this->view->disable();
+
+        $currentWorkflow = Workflow::findFirstById($this->request->getQuery('current'));        
+        $targetWorkflow = Workflow::findFirstById($this->request->getQuery('target'));
+
+        $currentSequence = $currentWorkflow->sequence;
+        $targetSequence = $targetWorkflow->sequence;
+
+        $currentWorkflow->sequence = $targetSequence;
+        $targetWorkflow->sequence = $currentSequence;
+       
+        if (!$currentWorkflow->save()) {
+            $this->view->enable();
+            foreach ($workflow->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "boards",
+                    "action"     => "profile",
+                    "params"     => [$currentWorkflow->board_id]
+                ]
+            );
+        }
+
+        if (!$targetWorkflow->save()) {
+            $this->view->enable();
+            foreach ($workflow->getMessages() as $message) {
+                $this->flash->error($message);
+            }
+
+            return $this->dispatcher->forward(
+                [
+                    "controller" => "boards",
+                    "action"     => "profile",
+                    "params"     => [$targetWorkflow->board_id]
+                ]
+            );
         }
     }
 
@@ -226,6 +275,6 @@ class WorkflowsController extends ControllerBase
         $this->response->setJsonContent($workflows);
         $this->response->send();        
     }
-
+    
 }
 

@@ -8,5 +8,4 @@
 <div class="ui main wide">
     {{ flash.output() }}
     {{ content() }}    
-    <div class="footer text-muted"><p>&copy; Copyright 2018, All rights reserved.</p></div>
 </div>

@@ -105,7 +105,7 @@ class Elements extends Component
                 }
             }
             if ($position == 'right') {
-                echo '</div">';
+                echo '</div>';
             }    
         }
     }
