@@ -15,7 +15,7 @@
     <div class="column">     
         <h3 class="ui dividing header" style="text-align: center;">        
           {{ workflow.name }}   
-          <div class="ui lightgrey label">3 / {{ workflow.limit }}</div>
+          <div class="ui lightgrey label" style="{{ workflow.limit > 0 ? '' : 'display:none;' }}">3 / {{ workflow.limit }}</div>
           <a data-tooltip="New Card" data-position="bottom center" style="float:right;"><i class="plus icon"></i></a>
         </h3>
         {#<a class="ui large blue ribbon label">{{ workflow.name }}</a>#}
