@@ -10,8 +10,8 @@
         <thead class="sorted_head">
             <tr>
                 <th class="five wide">NAME</th>
-                <th class="eight wide">DESCRIPTION</th>
-                <th>COLOR</th>
+                <th class="seven wide">DESCRIPTION</th>
+                <th class="two wide">COLOR</th>
                 <th class="two wide"></th>
             </tr>
         </thead>
