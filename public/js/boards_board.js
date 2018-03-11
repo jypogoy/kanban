@@ -1,14 +1,65 @@
 $(function() {
-    //loadWorkflowList();
+    //loadWorkflowList();    
+
+    $('.loader').fadeOut();
 
     $('[id^="sortable_"]').sortable({
         cursor: 'move',
-        connectWith: ".connectedSortable"
-    }).disableSelection();
+        connectWith: ".connectedSortable",
+        change: function(event, ui) {
+            ui.placeholder.css({ visibility: 'visible', border : '2px dashed teal', overFlow: 'hidden', textAlign: 'center', margin: '10px' });
+            ui.placeholder.html(' <i class="hand point down outline icon"></i>Drop here');
+        },
+        update:function(event, ui){
+            // var el = $(this).data().uiSortable.currentItem;
+            // var currentWorkflowId = $($(el).children()[1]).find('#workflowId').val();            
+            // var targetWorkflowId = $($(el).next('tr').children()[1]).find('#workflowId').val();            
+            // $.post('../../workflows/switchsequence?current=' + currentWorkflowId + '&target=' + targetWorkflowId, function (data) {
+            //     // Do nothing...      
+            // })
+            // .done(function (data) {
+            //    // Do nothing...
+            // })
+            // .fail(function (xhr, status, error) {
+            //     toastr.error(error);
+            // });
+        }
+    }).disableSelection();    
 
+    var startIndex;
     $('[id^="sortable_grid"]').sortable({
         cursor: 'move',
-        connectWith: ".connectedGridSortable"
+        connectWith: ".connectedGridSortable",
+        change: function(event, ui) {
+            ui.placeholder.css({ visibility: 'visible', border : '2px dashed teal', overFlow: 'hidden', textAlign: 'center', margin: '10px' });
+            ui.placeholder.html(' <i class="hand point down outline icon"></i>Drop here');
+        },
+        start:  function(event, ui) {
+            startIndex = ui.item.index();
+        },
+        update: function(event, ui) {
+            var moved = ui.item,
+                replaced = ui.item.prev();            
+            
+            // Check if item has been pushed to the top of the list or moved backwards the list
+            // In this case we need the .next() sibling
+            if (replaced.length == 0 || moved.index() < startIndex) {
+                replaced = ui.item.next();
+            }
+
+            var movedId = moved.find('#workflowId').val();
+            var replacedId = replaced.find('#workflowId').val();
+            
+            $.post('../../workflows/switchsequence?current=' + movedId + '&target=' + replacedId, function (data) {
+                // Do nothing...      
+            })
+            .done(function (data) {
+               // Do nothing...
+            })
+            .fail(function (xhr, status, error) {
+                toastr.error(error);
+            });
+        }    
     }).disableSelection();
 
     $('.ui.dropdown').dropdown();

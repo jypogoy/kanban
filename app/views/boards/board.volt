@@ -4,7 +4,7 @@
 
 {{ hidden_field('id', 'id' : 'boardId', 'value' : board.id) }}
 
-{#<div class="ui active loader"></div>#}
+<div class="ui active loader"></div>
 <div id="boardWrapper" class="ui equal width grid"></div>
 
 {{ alert.getRedirectMessage() }}
@@ -13,6 +13,7 @@
 <div id="sortable_grid" class="ui equal width stackable divided grid connectedGridSortable" style="margin-top: 0px;">
 {% for workflow in workflows %}
     <div class="column">     
+        <input type="text" id="workflowId" value="{{ workflow.id }}"/>
         <h3 class="ui dividing header" style="text-align: center;">        
           {{ workflow.name }}   
           <div class="ui lightgrey label" style="{{ workflow.limit > 0 ? '' : 'display:none;' }}">3 / {{ workflow.limit }}</div>

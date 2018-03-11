@@ -2,17 +2,26 @@ $(function () {
     
     loadWorkflowList();    
 
+    var startIndex;
     $('#workflowTable tbody').sortable({
         cursor: 'move',
-        update:function(event, ui){
-            var el = $(this).data().uiSortable.currentItem;
-            //console.log('Current row index' + $(el).parent().children().index(el));
-            //console.log('Next row index' + $(el).next('tr').parent().children().index(el))
-            //var currentSequence = $($(el).children()[1]).find('#sequence').val();
-            //var targetSequence = $($(el).next('tr').children()[1]).find('#sequence').val();
-            var currentWorkflowId = $($(el).children()[1]).find('#workflowId').val();            
-            var targetWorkflowId = $($(el).next('tr').children()[1]).find('#workflowId').val();            
-            $.post('../../workflows/switchsequence?current=' + currentWorkflowId + '&target=' + targetWorkflowId, function (data) {
+        start:  function(event, ui) {
+            startIndex = ui.item.index();
+        },
+        update: function(event, ui) {
+            var moved = ui.item,
+                replaced = ui.item.prev();            
+            
+            // Check if item has been pushed to the top of the list or moved backwards the list
+            // In this case we need the .next() sibling
+            if (replaced.length == 0 || moved.index() < startIndex) {
+                replaced = ui.item.next();
+            }
+
+            var movedId = moved.find('#workflowId').val();
+            var replacedId = replaced.find('#workflowId').val();
+            console.log('moved: ' + movedId + ' - replaced: ' + replacedId)
+            $.post('../../workflows/switchsequence?current=' + movedId + '&target=' + replacedId, function (data) {
                 // Do nothing...      
             })
             .done(function (data) {
@@ -41,7 +50,7 @@ function loadWorkflowList() {
             $('#workflowTable tbody').append(
                 '<tr>' +
                 '<td><div data-tooltip="Move" data-position="right center"><i class="ellipsis vertical icon move"></i><i class="ellipsis vertical icon move pair"></i></div></td>' +
-                '<td><input type="hidden" id="workflowId" value="' + rec.id + '"/><input type="hidden" id="sequence" value="' + rec.sequence + '"/>' + rec.name + '</td>' + 
+                '<td><input type="text" id="workflowId" value="' + rec.id + '"/>' + rec.name + '</td>' + 
                 '<td>' + rec.description + '</td>' + 
                 '<td>' + (rec.limit > 0 ? rec.limit : '<span class="small text-muted">None</span>') + '</td>' + 
                 '<td>' +
